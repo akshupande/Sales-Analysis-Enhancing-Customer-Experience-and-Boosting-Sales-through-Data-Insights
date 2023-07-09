@@ -9,9 +9,9 @@ This project aims to analyze sales data to enhance customer experience and boost
 - Recommendations for improving customer experience and boosting sales
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/yourusername/Sales-Analysis-Enhancing-Customer-Experience-and-Boosting-Sales-through-Data-Insights.git`
+1. Clone the repository: `git clone https://github.com/akshupande/Sales-Analysis-Enhancing-Customer-Experience-and-Boosting-Sales-through-Data-Insights.git`
 2. Install dependencies: `pip install -r requirements.txt`
-3. Run the analysis: `python analysis.py`
+3. Run the analysis: `Sales_Analysis.ipynb`
 
 ## Contributing
-Welcome contributions to this project. If you have an idea for a new feature or improvement, please open an issue to discuss it. Pull requests are also welcome.
+Contributions to this project are welcome. If you have an idea for a new feature or improvement, please open an issue to discuss it. Pull requests are also welcome.
