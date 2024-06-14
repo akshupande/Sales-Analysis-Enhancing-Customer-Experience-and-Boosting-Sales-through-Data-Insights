@@ -1,30 +1,134 @@
-def print_horizontal_line():
-    print("-" * 60)
+"""
+#All in one file
 
-def print_header(header_text):
-    print("\n" + "#" * 60)
-    print(header_text)
-    print("#" * 60 + "\n")
+# import python libraries
 
-def print_list_item(item_text):
-    print("* " + item_text)
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt # visualizing data
+%matplotlib inline
+import seaborn as sns
 
-print_header("Sales-Analysis-Enhancing-Customer-Experience-and-Boosting-Sales-through-Data-Insights")
+# import csv file
+df = pd.read_csv('Sales Data.csv', encoding= 'unicode_escape')
 
-print_header("Overview")
-print("This project aims to analyze sales data to enhance customer experience and boost sales through data insights. By analyzing customer behavior, purchase patterns, and other relevant data, we can gain valuable insights into how to improve the customer experience and increase sales.")
+df.shape
 
-print_header("Features")
-print_list_item("Data analysis and visualization of sales data")
-print_list_item("Identification of key trends and patterns in customer behavior")
-print_list_item("Recommendations for improving customer experience and boosting sales")
+df.head()
 
-print_header("Installation")
-print("1. Clone the repository: `git clone https://github.com/akshupande/Sales-Analysis-Enhancing-Customer-Experience-and-Boosting-Sales-through-Data-Insights.git`")
-print("2. Install dependencies: `pip install -r requirements.txt`")
-print("3. Run the analysis: `Sales_Analysis.ipynb`")
+df.info()
 
-print_header("Contributing")
-print("Contributions to this project are welcome. If you have an idea for a new feature or improvement, please open an issue to discuss it. Pull requests are also welcome.")
+#drop unrelated/blank columns
+df.drop(['Status', 'unnamed1'], axis=1, inplace=True)
 
-print_horizontal_line()
+#check for null values
+pd.isnull(df).sum()
+
+# drop null values
+df.dropna(inplace=True)
+
+# change data type
+df['Amount'] = df['Amount'].astype('int')
+
+df['Amount'].dtypes
+
+df.columns
+
+#rename column
+df.rename(columns= {'Marital_Status':'Shaadi'})
+
+# describe() method returns description of the data in the DataFrame (i.e. count, mean, std, etc)
+df.describe()
+
+# use describe() for specific columns
+df[['Age', 'Orders', 'Amount']].describe()
+
+#EDA
+
+# plotting a bar chart for Gender and it's count
+
+ax = sns.countplot(x = 'Gender',data = df)
+
+for bars in ax.containers:
+    ax.bar_label(bars)
+
+
+# plotting a bar chart for gender vs total amount
+
+sales_gen = df.groupby(['Gender'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False)
+
+sns.barplot(x = 'Gender',y= 'Amount' ,data = sales_gen)
+
+ax = sns.countplot(data = df, x = 'Age Group', hue = 'Gender')
+
+for bars in ax.containers:
+    ax.bar_label(bars)
+
+
+# Total Amount vs Age Group
+sales_age = df.groupby(['Age Group'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False)
+
+sns.barplot(x = 'Age Group',y= 'Amount' ,data = sales_age)
+
+# total number of orders from top 10 states
+
+sales_state = df.groupby(['State'], as_index=False)['Orders'].sum().sort_values(by='Orders', ascending=False).head(10)
+
+sns.set(rc={'figure.figsize':(15,5)})
+sns.barplot(data = sales_state, x = 'State',y= 'Orders')
+
+# total amount/sales from top 10 states
+
+sales_state = df.groupby(['State'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+
+sns.set(rc={'figure.figsize':(15,5)})
+sns.barplot(data = sales_state, x = 'State',y= 'Amount')
+
+ax = sns.countplot(data = df, x = 'Marital_Status')
+
+sns.set(rc={'figure.figsize':(7,5)})
+for bars in ax.containers:
+    ax.bar_label(bars)
+
+sales_state = df.groupby(['Marital_Status', 'Gender'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False)
+
+sns.set(rc={'figure.figsize':(6,5)})
+sns.barplot(data = sales_state, x = 'Marital_Status',y= 'Amount', hue='Gender')
+
+sns.set(rc={'figure.figsize':(20,5)})
+ax = sns.countplot(data = df, x = 'Occupation')
+
+for bars in ax.containers:
+    ax.bar_label(bars)
+
+sales_state = df.groupby(['Occupation'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False)
+
+sns.set(rc={'figure.figsize':(20,5)})
+sns.barplot(data = sales_state, x = 'Occupation',y= 'Amount')
+
+sns.set(rc={'figure.figsize':(20,5)})
+ax = sns.countplot(data = df, x = 'Product_Category')
+
+for bars in ax.containers:
+    ax.bar_label(bars)
+
+sales_state = df.groupby(['Product_Category'], as_index=False)['Amount'].sum().sort_values(by='Amount', ascending=False).head(10)
+
+sns.set(rc={'figure.figsize':(20,5)})
+sns.barplot(data = sales_state, x = 'Product_Category',y= 'Amount')
+
+sales_state = df.groupby(['Product_ID'], as_index=False)['Orders'].sum().sort_values(by='Orders', ascending=False).head(10)
+
+sns.set(rc={'figure.figsize':(20,5)})
+sns.barplot(data = sales_state, x = 'Product_ID',y= 'Orders')
+
+# top 10 most sold products (same thing as above)
+
+fig1, ax1 = plt.subplots(figsize=(12,7))
+df.groupby('Product_ID')['Orders'].sum().nlargest(10).sort_values(ascending=False).plot(kind='bar')
+"""
+
+"""
+Conclusion:
+Married women age group 26-35 yrs from UP, Maharastra and Karnataka working in IT, Healthcare and Aviation are more likely to buy products from Food, Clothing and Electronics category 
+"""
